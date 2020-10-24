@@ -18,7 +18,6 @@ const tweet = new Twit({
 
 (async () => {
   try {
-
     const response = await fetch("https://www.la-spa.fr/adopter-animaux?field_esp_ce_value=2&field_race_value=&_field_localisation=refuge&field_departement_refuge_tid=All&field_sexe_value=All&field_taille_value=All&title_1=&field_sauvetage_value=All&_field_age_value=&_field_adresse=", {
       "method": "GET",
     })
@@ -91,4 +90,3 @@ const tweet = new Twit({
     console.log(error);
   }
 })();
-
