@@ -17,11 +17,4 @@ jobs:
       - name: Run Bot
         run: npm i && node index.js
         env:
-          DB_HOST: ${{secrets.ENV.DB_HOST}}
-          DB_USER: ${{secrets.ENV.DB_USER}}
-          DB_PASS: ${{secrets.ENV.DB_PASS}}
-          CONSUMER_KEY: ${{secrets.ENV.CONSUMER_KEY}}
-          CONSUMER_SECRET: ${{secrets.ENV.CONSUMER_SECRET}}
-          BEARER_TK: ${{secrets.ENV.BEARER_TK}}
-          ACCESS_TOKEN: ${{secrets.ENV.ACCESS_TOKEN}}
-          ACCESS_TOKEN_SECRET: ${{secrets.ENV.ACCESS_TOKEN_SECRET}}
+          BOT_GITHUB_TOKEN: ${{ secrets.ENV }}
