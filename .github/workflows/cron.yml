@@ -2,7 +2,7 @@ name: Run script for the twitter bot
 
 on:
   schedule:
-    - cron: '5 * * * *'
+    - cron: '* * * * *'
 
 jobs: 
   build:
