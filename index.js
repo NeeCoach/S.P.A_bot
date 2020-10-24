@@ -16,6 +16,8 @@ const tweet = new Twit({
 });
 
 
+const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
 (async () => {
   try {
     const response = await fetch("https://www.la-spa.fr/adopter-animaux?field_esp_ce_value=2&field_race_value=&_field_localisation=refuge&field_departement_refuge_tid=All&field_sexe_value=All&field_taille_value=All&title_1=&field_sauvetage_value=All&_field_age_value=&_field_adresse=", {
@@ -45,7 +47,7 @@ const tweet = new Twit({
         dogRace = $d(element).find('.field-name-field-race > div:nth-child(2)').first().text();
         if (dogRace.match(/\(([^)]*)\)/)) dogRace = /\(([^)]*)\)/.exec(dogRace)[1]
         dogDesc = $d(element).find('.field-type-text-with-summary > div > div').text();
-        dogDesc = dogDesc.length == 0 ? null : dogDesc.substring(0, 216);
+        dogDesc = dogDesc.length == 0 ? null : dogDesc.substring(0, 210);
       }).get();
       return {
         dogName: dogName,
@@ -72,8 +74,8 @@ const tweet = new Twit({
             media_data: img64
           });
           const mediaIdStr = media.data.media_id_string;
-          const tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink}`
-          const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink}`
+          const tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} @SPA_Officiel #Chien`
+          const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink} @SPA_Officiel #Chien`
           const status = dog.dogDesc ? tweetTextScrapped : tweetTextManual;
           const tweetResponse = await tweet.post('statuses/update', {
             status: status,
@@ -90,3 +92,9 @@ const tweet = new Twit({
     console.log(error);
   }
 })();
+
+
+const twitter_account = [
+  '@SPA_Officiel',
+  '@30millionsdamis',
+];
