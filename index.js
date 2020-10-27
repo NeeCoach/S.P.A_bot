@@ -23,7 +23,7 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
     const response = await fetch("https://www.la-spa.fr/adopter-animaux?field_esp_ce_value=2&field_race_value=&_field_localisation=refuge&field_departement_refuge_tid=All&field_sexe_value=All&field_taille_value=All&title_1=&field_sauvetage_value=All&_field_age_value=&_field_adresse=", {
       "method": "GET",
     })
-    const $ = cheerio.load(await response.text())
+    let $ = cheerio.load(await response.text())
     const dogs = $(".block-result-search").map(async (index, element) => {
       const dogData = $(element).find('.refuge-name > a:nth-child(2)')
         .text()
@@ -42,11 +42,11 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
       const getOneDogresponse = await fetch(dogLink, {
         "method": "GET",
       })
-      const $d = cheerio.load(await getOneDogresponse.text())
-      $d('.content.col-xs-12.col-sm-8.left-bar.dog').map((index, element) => {
-        dogRace = $d(element).find('.field-name-field-race > div:nth-child(2)').first().text();
+      $ = cheerio.load(await getOneDogresponse.text())
+      $('.content.col-xs-12.col-sm-8.left-bar.dog').map((index, element) => {
+        dogRace = $(element).find('.field-name-field-race > div:nth-child(2)').first().text();
         if (dogRace.match(/\(([^)]*)\)/)) dogRace = /\(([^)]*)\)/.exec(dogRace)[1]
-        dogDesc = $d(element).find('.field-type-text-with-summary > div > div').text();
+        dogDesc = $(element).find('.field-type-text-with-summary > div > div').text();
         dogDesc = dogDesc.length == 0 ? null : dogDesc.substring(0, 210);
       }).get();
       return {
@@ -63,7 +63,7 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
     let client = await MongoClient.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`)
     let db = client.db("spa_bot");
     try {
-      for await (const dog of dogs) {
+      for (const dog of await Promise.all(dogs)) {
         const res = await db.collection("dogs").findOne(dog);
         if (res === null) {
           console.log(`${dog.dogName} added to database 😔`);
