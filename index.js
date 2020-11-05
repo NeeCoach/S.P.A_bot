@@ -74,7 +74,11 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
             media_data: img64
           });
           const mediaIdStr = media.data.media_id_string;
-          const tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #Chien`
+          if (dog.dogRace !== 'undefined') {
+            const tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #Chien`
+          } else {
+            const tweetTextManual = `${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #Chien`
+          }
           const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink} #Chien`
           const status = dog.dogDesc ? tweetTextScrapped : tweetTextManual;
           const tweetResponse = await tweet.post('statuses/update', {
