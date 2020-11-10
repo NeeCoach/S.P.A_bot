@@ -16,7 +16,6 @@ const tweet = new Twit({
 });
 
 
-const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 (async () => {
   try {
@@ -26,13 +25,13 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
     let $ = cheerio.load(await response.text())
     const dogs = $(".block-result-search").map(async (index, element) => {
       const dogData = $(element).find('.refuge-name > a:nth-child(2)')
-        .text()
-        .split(' - ');
+      .text()
+      .split(' - ');
       const dogLink = `https://www.la-spa.fr${$(element).find('span.animal-name > h3 > a').attr('href')}`
       const dogName = $(element).find('span.animal-name > h3 > a')
-        .text()
-        .split(' ', 1)
-        .toString();
+      .text()
+      .split(' ', 1)
+      .toString();
       const dogImg = $(element).find('.field-item > img').attr('src');
       const dogDep = dogData[0];
       const dogRef = dogData[1];
@@ -62,6 +61,7 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
     }).get();
     let client = await MongoClient.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`)
     let db = client.db("spa_bot");
+    let tweetTextManual;
     try {
       for (const dog of await Promise.all(dogs)) {
         const res = await db.collection("dogs").findOne(dog);
@@ -75,9 +75,9 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
           });
           const mediaIdStr = media.data.media_id_string;
           if (dog.dogRace !== 'undefined') {
-            const tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #Chien`
+            tweetTextManual = `${dog.dogName} est un chien de race ${dog.dogRace}, ${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #LaVieQuilsMéritent`
           } else {
-            const tweetTextManual = `${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #Chien`
+            tweetTextManual = `${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #LaVieQuilsMéritent`
           }
           const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink} #Chien`
           const status = dog.dogDesc ? tweetTextScrapped : tweetTextManual;
@@ -97,8 +97,9 @@ const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
   }
 })();
 
-
-const twitter_account = [
-  '@SPA_Officiel',
-  '@30millionsdamis',
-];
+//
+// const getRandomArray = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// const twitter_account = [
+//   '@SPA_Officiel',
+//   '@30millionsdamis',
+// ];
