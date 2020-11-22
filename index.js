@@ -79,7 +79,7 @@ const tweet = new Twit({
           } else {
             tweetTextManual = `${dog.dogName} attend patiemment sa nouvelle famille au ${dog.dogRef} dans le département ${dog.dogDep}. En savoir plus ${dog.dogLink} #LaVieQuilsMéritent`
           }
-          const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink} #Chien`
+          const tweetTextScrapped = `${dog.dogDesc}... En savoir plus : ${dog.dogLink} #LaVieQuilsMéritent`
           const status = dog.dogDesc ? tweetTextScrapped : tweetTextManual;
           const tweetResponse = await tweet.post('statuses/update', {
             status: status,
