@@ -2,11 +2,11 @@ require("dotenv").config();
 const fetch = require("node-fetch");
 const mongodb = require("mongodb");
 const MongoClient = mongodb.MongoClient;
-const Twit = require("twit");
+const twit = require("twitter-api-v2");
 const imageToBase64 = require("image-to-base64");
 const strip = require("string-strip-html");
 
-const tweet = new Twit({
+const tweet = new twit.TwitterApi({
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRET,
   access_token: process.env.ACCESS_TOKEN,
@@ -17,7 +17,7 @@ const tweet = new Twit({
 
 const fetchDogs = async () => {
   const response = await fetch(
-    "https://www.la-spa.fr/app/wp-json/spa/v1/animals/search/?api=1&species=chien&paged=1&seed=284544279222945"
+    "https://www.la-spa.fr/app/wp-json/spa/v1/animals/search/?api=1&species=chien&paged=1&seed=574726291398023"
   );
   const jsonResponse = await response.json();
   const dogsData = jsonResponse.results;

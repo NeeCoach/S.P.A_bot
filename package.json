@@ -15,7 +15,8 @@
     "mongodb": "^3.6.2",
     "node-fetch": "^2.6.1",
     "string-strip-html": "^8.3.0",
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "twitter-api-v2": "^1.15.0"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
